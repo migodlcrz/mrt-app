@@ -7,6 +7,7 @@ import {
   deleteStation,
   updateStation,
 } from "../controllers/stationControllers";
+import requireAuth from "../middleware/requireAuth";
 
 const stn = express.Router();
 

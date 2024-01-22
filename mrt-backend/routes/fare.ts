@@ -6,7 +6,7 @@ import {
   updateFare,
   createFare,
 } from "../controllers/fareController";
-import fareModel from "../models/fareModel";
+import requireAuth from "../middleware/requireAuth";
 
 const fare = express.Router();
 

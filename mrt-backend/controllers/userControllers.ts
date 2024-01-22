@@ -14,9 +14,11 @@ interface LoginRequestBody {
   password: string;
 }
 
-const createToken = (_id: string) => {
+const createToken = (_id: string, email: string) => {
   const secretOrPrivateKey: Secret = process.env.SECRET || "";
-  return jwt.sign({ _id: _id }, secretOrPrivateKey, { expiresIn: "3d" });
+  return jwt.sign({ _id: _id, email: email }, secretOrPrivateKey, {
+    expiresIn: "1h",
+  });
 };
 
 // login a user
@@ -43,10 +45,10 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
   }
 
   try {
-    const token = createToken(user._id);
+    const token = createToken(user._id, user.email);
     const user_ = user.email;
     const pass_ = user.password;
-    res.status(200).json({ user_, token });
+    res.status(200).json({ user_, jwt: token });
   } catch (error) {
     res.status(400).json({ error: "INTERNAL ERROR" });
   }
@@ -90,7 +92,7 @@ export const signupUser = async (
 
     const user = await User.create({ email, password: hashedPassword });
 
-    const token = createToken(user._id);
+    const token = createToken(user._id, user.email);
 
     const user_ = user.email;
     const pass_ = user.password;

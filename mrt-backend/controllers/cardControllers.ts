@@ -51,11 +51,18 @@ export const updateCard = async (req: Request, res: Response) => {
     return res.status(404).json({ error: "Card does not exist." });
   }
 
+  const { balance } = req.body;
+
+  if (balance < 1) {
+    return res.status(404).json({ error: "Balance cannot be negative." });
+  }
+
   //updates the card
   const card = await Card.findOneAndUpdate(
     { _id: id },
     {
-      ...req.body,
+      // ...req.body,
+      balance: balance,
     }
   );
 

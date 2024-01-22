@@ -6,8 +6,11 @@ import {
   deleteCard,
   updateCard,
 } from "../controllers/cardControllers";
+import requireAuth from "../middleware/requireAuth";
 
 const crd = express.Router();
+
+crd.use(requireAuth);
 
 //GET all card
 crd.get("/", getCards);
